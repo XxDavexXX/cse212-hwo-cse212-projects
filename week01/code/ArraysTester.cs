@@ -8,7 +8,7 @@ public static class ArraysTester {
         double[] multiples = MultiplesOf(7, 5);
         Console.WriteLine($"<double>{{{string.Join(',', multiples)}}}"); // <double>{7, 14, 21, 28, 35}
         multiples = MultiplesOf(1.5, 10);
-        Console.WriteLine($"<double>{{{string.Join(',', multiples)}}}"); // <double>{1.5, 3.0, 4.5, 6.0, 7.5, 9.0, 10.5, 12.0, 13.5, 15.0}
+        Console.WriteLine($"<double>{{{string.Join(", ", multiples.Select(x => x.ToString("0.0")))}}}");  // <double>{1.5, 3.0, 4.5, 6.0, 7.5, 9.0, 10.5, 12.0, 13.5, 15.0}
         multiples = MultiplesOf(-2, 10);
         Console.WriteLine($"<double>{{{string.Join(',', multiples)}}}"); // <double>{-2, -4, -6, -8, -10, -12, -14, -16, -18, -20}
 
@@ -39,7 +39,18 @@ public static class ArraysTester {
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return new double[0]; // replace this return statement with your own
+        // First we must create a list
+        List<double> multiples = new List<double>();
+
+        // Secondly we must calculate the multiples and add them to the list
+        for (int i = 1; i <= length; i++)
+        {
+            double multiple = number * i; // In this way the multiple is calculated
+            multiples.Add(multiple); // Adding to list
+        }
+
+        // As a last step we must return the list as an array
+        return multiples.ToArray();
     }
     
     /// <summary>
@@ -57,5 +68,25 @@ public static class ArraysTester {
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
+        // Primordial is to validate the value of 'amount'
+        if (amount <= 0 || amount > data.Count)
+        {
+            throw new ArgumentException("Amount must be in the range of 1 and data.Count");
+        }
+
+        // We start rotating the list to the right
+        int n = data.Count;
+        amount %= n; // In case amount is greater than "n", it is necessary to validate so as not to make unnecessary rotations
+        if (amount == 0) return; // If "amount" is a multiple of "n", there is no need to rotate.
+
+        // We are rotating
+        for (int i = 0; i < amount; i++)
+        {
+            int lastElement = data[n - 1]; // Save the last element
+            data.RemoveAt(n - 1); // Eliminate the last element
+            data.Insert(0, lastElement); //Insert the element
+        }
+
+        // I am not returning anything because I am already modifying the value directly.
     }
 }
