@@ -11,7 +11,7 @@ public class CustomerServiceSolution {
         // Test Cases
 
         // Test 1
-        // Scenario: Can I add one customer and then serve the customer?
+        // Scenario: Can I add a customer and then serve the customer?
         // Expected Result: This should display the customer that was added
         Console.WriteLine("Test 1");
         var service = new CustomerServiceSolution(4);
