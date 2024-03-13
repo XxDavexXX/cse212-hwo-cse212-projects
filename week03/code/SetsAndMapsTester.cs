@@ -53,7 +53,11 @@ public static class SetsAndMapsTester {
         // Problem 4: Maze
         Console.WriteLine("\n=========== Maze TESTS ===========");
         Dictionary<ValueTuple<int, int>, bool[]> map = SetupMazeMap();
+
+        // Create maze object
         var maze = new Maze(map);
+
+        // Test movements
         maze.ShowStatus(); // Should be at (1,1)
         maze.MoveUp(); // Error
         maze.MoveLeft(); // Error
@@ -107,11 +111,24 @@ public static class SetsAndMapsTester {
     /// that there were no duplicates) and therefore should not be displayed.
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
+    // private static void DisplayPairs(string[] words) {
+    //     // To display the pair correctly use something like:
+    //     // Console.WriteLine($"{word} & {pair}");
+    //     // Each pair of words should displayed on its own line.
+    // }
+
     private static void DisplayPairs(string[] words) {
-        // To display the pair correctly use something like:
-        // Console.WriteLine($"{word} & {pair}");
-        // Each pair of words should displayed on its own line.
+    var seenWords = new HashSet<string>(); 
+    foreach (var word in words) {
+        var reversed = new string(word.Reverse().ToArray()); 
+        if (seenWords.Contains(reversed)) {
+            Console.WriteLine($"{word} & {reversed}");
+        } else {
+            seenWords.Add(word); 
+        }
     }
+}
+
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
@@ -128,14 +145,19 @@ public static class SetsAndMapsTester {
     /// # Problem 2 #
     /// #############
     private static Dictionary<string, int> SummarizeDegrees(string filename) {
-        var degrees = new Dictionary<string, int>();
-        foreach (var line in File.ReadLines(filename)) {
-            var fields = line.Split(",");
-            // Todo Problem 2 - ADD YOUR CODE HERE
+    var degrees = new Dictionary<string, int>();
+    foreach (var line in File.ReadLines(filename)) {
+        var fields = line.Split(",");
+        var degree = fields[3]; 
+        if (degrees.ContainsKey(degree)) {
+            degrees[degree]++;
+        } else {
+            degrees[degree] = 1;
         }
-
-        return degrees;
     }
+    return degrees;
+}
+
 
     /// <summary>
     /// Determine if 'word1' and 'word2' are anagrams.  An anagram
@@ -157,9 +179,28 @@ public static class SetsAndMapsTester {
     /// # Problem 3 #
     /// #############
     private static bool IsAnagram(string word1, string word2) {
-        // Todo Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var dict1 = new Dictionary<char, int>();
+        var dict2 = new Dictionary<char, int>();
+
+        foreach (char c in word1.ToLower().Replace(" ", "")) {
+            if (dict1.ContainsKey(c)) {
+                dict1[c]++;
+            } else {
+                dict1[c] = 1;
+            }
+        }
+
+        foreach (char c in word2.ToLower().Replace(" ", "")) {
+            if (dict2.ContainsKey(c)) {
+                dict2[c]++;
+            } else {
+                dict2[c] = 1;
+            }
+        }
+
+        return dict1.OrderBy(kv => kv.Key).SequenceEqual(dict2.OrderBy(kv => kv.Key));
     }
+
 
     /// <summary>
     /// Sets up the maze dictionary for problem 4

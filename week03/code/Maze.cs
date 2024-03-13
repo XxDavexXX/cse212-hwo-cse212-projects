@@ -1,19 +1,7 @@
-/// <summary>
-/// Defines a maze using a dictionary. The dictionary is provided by the
-/// user when the Maze object is created. The dictionary will contain the
-/// following mapping:
-///
-/// (x,y) : [left, right, up, down]
-///
-/// 'x' and 'y' are integers and represents locations in the maze.
-/// 'left', 'right', 'up', and 'down' are boolean are represent valid directions
-///
-/// If a direction is false, then we can assume there is a wall in that direction.
-/// If a direction is true, then we can proceed.  
-///
-/// If there is a wall, then display "Can't go that way!".  If there is no wall,
-/// then the 'currX' and 'currY' values should be changed.
-/// </summary>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 public class Maze {
     private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
     private int _currX = 1;
@@ -23,37 +11,40 @@ public class Maze {
         _mazeMap = mazeMap;
     }
 
-    // Todo Maze Problem - ADD YOUR CODE HERE
-    /// <summary>
-    /// Check to see if you can move left.  If you can, then move.  If you
-    /// can't move, then display "Can't go that way!"
-    /// </summary>
     public void MoveLeft() {
-        // FILL IN CODE
+        if (_mazeMap.ContainsKey((_currX, _currY)) && _mazeMap[(_currX, _currY)][0]) {
+            _currY--; // Move left means decreasing Y coordinate
+            Console.WriteLine("Moved left.");
+        } else {
+            Console.WriteLine("Can't go left!");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move right.  If you can, then move.  If you
-    /// can't move, then display "Can't go that way!"
-    /// </summary>
     public void MoveRight() {
-        // FILL IN CODE
+        if (_mazeMap.ContainsKey((_currX, _currY)) && _mazeMap[(_currX, _currY)][1]) {
+            _currY++; // Move right means increasing Y coordinate
+            Console.WriteLine("Moved right.");
+        } else {
+            Console.WriteLine("Can't go right!");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move up.  If you can, then move.  If you
-    /// can't move, then display "Can't go that way!"
-    /// </summary>
     public void MoveUp() {
-        // FILL IN CODE
+        if (_mazeMap.ContainsKey((_currX, _currY)) && _mazeMap[(_currX, _currY)][2]) {
+            _currX--; // Move up means decreasing X coordinate
+            Console.WriteLine("Moved up.");
+        } else {
+            Console.WriteLine("Can't go up!");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move down.  If you can, then move.  If you
-    /// can't move, then display "Can't go that way!"
-    /// </summary>
     public void MoveDown() {
-        // FILL IN CODE
+        if (_mazeMap.ContainsKey((_currX, _currY)) && _mazeMap[(_currX, _currY)][3]) {
+            _currX++; // Move down means increasing X coordinate
+            Console.WriteLine("Moved down.");
+        } else {
+            Console.WriteLine("Can't go down!");
+        }
     }
 
     public void ShowStatus() {
