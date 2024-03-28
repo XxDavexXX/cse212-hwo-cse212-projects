@@ -145,10 +145,18 @@ public static class RecursionTester {
     /// to identify a base case (terminating case).  If the value of
     /// n &lt;= 0, just return 0.   A loop should not be used.
     /// </summary>
-    public static int SumSquaresRecursive(int n) {
-        // TODO Start Problem 1
-        return 0;
+    public static int SumSquaresRecursive(int n)
+    {
+        if (n <= 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return n * n + SumSquaresRecursive(n - 1);
+        }
     }
+
 
     /// <summary>
     /// #############
@@ -169,57 +177,29 @@ public static class RecursionTester {
     /// You can assume that the size specified is always valid (between 1 
     /// and the length of the letters list).
     /// </summary>
-    public static void PermutationsChoose(string letters, int size, string word = "") {
-        // TODO Start Problem 2
+    public static void PermutationsChoose(string letters, int size, string word = "")
+    {
+        if (size == 0)
+        {
+            Console.WriteLine(word);
+            return;
+        }
+
+        for (int i = 0; i < letters.Length; i++)
+        {
+            char selectedChar = letters[i];
+
+            string remainingLetters = letters.Remove(i, 1);
+
+            PermutationsChoose(remainingLetters, size - 1, word + selectedChar);
+        }
     }
 
-    /// <summary>
-    /// #############
-    /// # Problem 3 #
-    /// #############
-    /// Imagine that there was a staircase with 's' stairs.  
-    /// We want to count how many ways there are to climb 
-    /// the stairs.  If the person could only climb one 
-    /// stair at a time, then the total would be just one.  
-    /// However, if the person could choose to climb either 
-    /// one, two, or three stairs at a time (in any order), 
-    /// then the total possibilities become much more 
-    /// complicated.  If there were just three stairs,
-    /// the possible ways to climb would be four as follows:
-    ///
-    ///     1 step, 1 step, 1 step
-    ///     1 step, 2 step
-    ///     2 step, 1 step
-    ///     3 step
-    ///
-    /// With just one step to go, the ways to get
-    /// to the top of 's' stairs is to either:
-    ///
-    /// - take a single step from the second to last step, 
-    /// - take a double step from the third to last step, 
-    /// - take a triple step from the fourth to last step
-    ///
-    /// We don't need to think about scenarios like taking two 
-    /// single steps from the third to last step because this
-    /// is already part of the first scenario (taking a single
-    /// step from the second to last step).
-    ///
-    /// These final leaps give us a sum:
-    ///
-    /// CountWaysToClimb(s) = CountWaysToClimb(s-1) + 
-    ///                       CountWaysToClimb(s-2) +
-    ///                       CountWaysToClimb(s-3)
-    ///
-    /// To run this function for larger values of 's', you will need
-    /// to update this function to use memoization.  The parameter
-    /// 'remember' has already been added as an input parameter to 
-    /// the function for you to complete this task.
-    ///
-    /// The last test case is commented out because it will not work
-    /// until the memoization is implemented.
-    /// </summary>
-    public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null) {
-        // Base Cases
+   public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null) {
+        if (remember == null)
+            remember = new Dictionary<int, decimal>();
+        if (remember.ContainsKey(s))
+            return remember[s];
         if (s == 0)
             return 0;
         if (s == 1)
@@ -229,10 +209,11 @@ public static class RecursionTester {
         if (s == 3)
             return 4;
 
-        // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+        remember[s] = ways;
         return ways;
     }
+
 
     /// <summary>
     /// #############
@@ -248,8 +229,23 @@ public static class RecursionTester {
     /// some of the string functions like IndexOf and [..X] / [X..] to be useful in solving this problem.
     /// </summary>
     public static void WildcardBinary(string pattern) {
-        // TODO Start Problem 4
+        WildcardBinaryHelper(pattern, 0, "");
     }
+
+    private static void WildcardBinaryHelper(string pattern, int index, string current) {
+        if (index == pattern.Length) {
+            Console.WriteLine(current);
+            return;
+        }
+
+        if (pattern[index] == '*') {
+            WildcardBinaryHelper(pattern, index + 1, current + '0');
+            WildcardBinaryHelper(pattern, index + 1, current + '1');
+        } else {
+            WildcardBinaryHelper(pattern, index + 1, current + pattern[index]);
+        }
+    }
+
 
     /// <summary>
     /// Use recursion to Print all paths that start at (0,0) and end at the
